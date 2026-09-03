@@ -2082,6 +2082,156 @@
     height: 80px;
     width: auto;
   }
+
+  // Product mega menu: left sidebar (categories) + right flyout (columns of products)
+  .drop-mega.mega-sidebar {
+    width: 100vw;
+    left: 0;
+    position: fixed;
+    top: 55px;
+    padding-top: 0;
+
+    .mf-sidebar-flyout {
+      display: flex;
+      align-items: stretch;
+      background: #111;
+      max-height: 70vh;
+    }
+
+    .mf-sidebar {
+      flex: 0 0 260px;
+      background: #1a1a1a;
+      padding: 10px 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-y: auto;
+    }
+
+    .mf-sidebar-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+
+      .chev {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      &.active {
+        background: rgba(255, 255, 255, 0.1);
+        border-left-color: #fff;
+        font-weight: 600;
+
+        .chev {
+          color: #fff;
+        }
+      }
+
+      &.mf-top {
+        font-weight: 700;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 6px;
+        cursor: default;
+      }
+    }
+
+    .mf-content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .mf-cols-scroll {
+      display: flex;
+      gap: 40px;
+      padding: 28px 32px;
+      overflow-x: auto;
+      height: 100%;
+    }
+
+    .mf-col {
+      min-width: 190px;
+      flex: 0 0 auto;
+
+      h4 {
+        margin: 0 0 12px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 9px;
+      }
+
+      a {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 13px;
+        text-decoration: none;
+
+        &:hover {
+          color: #fff;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  // Flat dropdowns (e.g. Resources) that have no sub-categories: same dark,
+  // fixed, full-width panel language as .mega-sidebar / .mega-brand above,
+  // just without the left categories rail since there's no second level.
+  .drop-mega.mega-list {
+    width: 100vw;
+    left: 0;
+    position: fixed;
+    top: 55px;
+    padding-top: 0;
+
+    ul {
+      background: #111;
+      border-radius: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      padding: 24px 32px;
+    }
+
+    li {
+      margin-bottom: 0 !important;
+
+      a {
+        display: inline-block;
+        padding: 0 !important;
+        width: auto;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+        font-weight: 600;
+        border-bottom: none !important;
+
+        &:hover {
+          color: #fff;
+        }
+
+        &:after {
+          display: none !important;
+        }
+      }
+    }
+  }
+
   .con-tabs{
 
     li{

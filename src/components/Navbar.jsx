@@ -12,9 +12,19 @@ import lgg1 from "@/images/lgg1.png";
 import lgg2 from "@/images/lgg2.png";
 import lgg3 from "@/images/lgg3.png";
 
+// Splits a flat products array into column-sized chunks for the mega-menu flyout
+const chunkArray = (arr, size) => {
+  const chunks = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks.length ? chunks : [[]];
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState([]);
+  const [activeProductCat, setActiveProductCat] = useState(0);
   const [menuLinks, setMenuLinks] = useState([]);
   const [brands, setBrands] = useState([]);
   // const [brands, setBrands] = useState([
@@ -148,36 +158,63 @@ const Navbar = () => {
 
                           <div
                             className={`drop-mega ${
-                              link.mega ? "mega-brand" : ""
+                              link.name === "Product"
+                                ? "mega-sidebar"
+                                : link.mega
+                                ? "mega-brand"
+                                : link.hasDropdown
+                                ? "mega-list"
+                                : ""
                             }`}
                           >
                             {link.name === "Product" ? (
-                              <ul>
-                                {products.map((category, idx) => (
-                                  <li key={idx} className="sub-link">
-                                    <Link href={"#"}>{category.name}</Link>
-                                    {category.products &&
-                                      category.products.length > 0 && (
-                                        <div className={`submenu`}>
-                                          <ul>
-                                            {category.products.map(
-                                              (product, subIdx) => (
-                                                <li key={subIdx}>
-                                                  <Link
-                                                    href={`/product/${product.slug}`}
-                                                    dangerouslySetInnerHTML={{
-                                                      __html: product.title,
-                                                    }}
-                                                  ></Link>
-                                                </li>
-                                              )
-                                            )}
-                                          </ul>
-                                        </div>
-                                      )}
-                                  </li>
-                                ))}
-                              </ul>
+                              <div className="mf-sidebar-flyout">
+                                <div className="mf-sidebar">
+                                  <div className="mf-sidebar-item mf-top">
+                                    <span>All Products</span>
+                                  </div>
+                                  {products.map((category, idx) => (
+                                    <div
+                                      key={idx}
+                                      className={`mf-sidebar-item ${
+                                        activeProductCat === idx ? "active" : ""
+                                      }`}
+                                      onMouseEnter={() => setActiveProductCat(idx)}
+                                    >
+                                      <span>{category.name}</span>
+                                      <span className="chev">›</span>
+                                    </div>
+                                  ))}
+                                </div>
+                                <div className="mf-content">
+                                  <div className="mf-cols-scroll">
+                                    {chunkArray(
+                                      products[activeProductCat]?.products || [],
+                                      8
+                                    ).map((chunk, colIdx) => (
+                                      <div className="mf-col" key={colIdx}>
+                                        {colIdx === 0 && (
+                                          <h4>
+                                            {products[activeProductCat]?.name}
+                                          </h4>
+                                        )}
+                                        <ul>
+                                          {chunk.map((product, subIdx) => (
+                                            <li key={subIdx}>
+                                              <Link
+                                                href={`/product/${product.slug}`}
+                                                dangerouslySetInnerHTML={{
+                                                  __html: product.title,
+                                                }}
+                                              ></Link>
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
                             ) : link.name === "Our Brands" ? (
                               <ul>
                                 {link.hasDropdown.map((item, idx) => (
