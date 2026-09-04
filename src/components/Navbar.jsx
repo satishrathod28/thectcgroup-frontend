@@ -6,6 +6,7 @@ import Link from "next/link";
 import logo from "@/images/logo.png";
 import menu from "@/images/menu.svg";
 import close from "@/images/close.svg";
+import search from "@/images/search.svg";
 import { PatternAnim } from "@/components/PatternAnim";
 import api from "@/axios/api";
 import lgg1 from "@/images/lgg1.png";
@@ -20,6 +21,9 @@ const chunkArray = (arr, size) => {
   }
   return chunks.length ? chunks : [[]];
 };
+
+const getProductTitle = (title) =>
+  title?.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() || "";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +50,18 @@ const Navbar = () => {
   // ]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDrop, setShowDrop] = useState(null);
+  const [productQuery, setProductQuery] = useState("");
+
+  const searchableProducts = products.flatMap((category) => category.products || []);
+  const matchingProducts = productQuery.trim()
+    ? searchableProducts
+        .filter((product) =>
+          getProductTitle(product.title)
+            .toLowerCase()
+            .includes(productQuery.trim().toLowerCase())
+        )
+        .slice(0, 6)
+    : [];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -257,6 +273,35 @@ const Navbar = () => {
                     </li>
                   ))}
               </ul>
+              <div className="product-search">
+                <form onSubmit={(event) => event.preventDefault()}>
+                  <label htmlFor="product-search-input" className="visually-hidden">
+                    Search 
+                  </label>
+                  <input
+                    id="product-search-input"
+                    type="search"
+                    placeholder="Search"
+                    value={productQuery}
+                    onChange={(event) => setProductQuery(event.target.value)}
+                  />
+                  <Image src={search} alt="" className="search-icon" aria-hidden="true" />
+                </form>
+                {matchingProducts.length > 0 && (
+                  <ul className="product-search-results">
+                    {matchingProducts.map((product) => (
+                      <li key={product.slug}>
+                        <Link
+                          href={`/product/${product.slug}`}
+                          onClick={() => setProductQuery("")}
+                        >
+                          {getProductTitle(product.title)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
               <ul className="ot-list">
                 <li>
                   <Link href="/contact" className="main-btn white-btn">
