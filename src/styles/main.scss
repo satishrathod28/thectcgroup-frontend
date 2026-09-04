@@ -2070,7 +2070,7 @@
     width: 100vw;
     left: 0;
     position: fixed;
-    top: 55px;
+    top: var(--navbar-height, 55px);
   }
   .drop-mega.mega-brand ul {
     border-radius: 0px;
@@ -2088,13 +2088,13 @@
     width: 100vw;
     left: 0;
     position: fixed;
-    top: 55px;
+    top: var(--navbar-height, 55px);
     padding-top: 0;
+    background: #111;
 
     .mf-sidebar-flyout {
       display: flex;
       align-items: stretch;
-      background: #111;
       max-height: 70vh;
     }
 
@@ -2193,36 +2193,43 @@
   // fixed, full-width panel language as .mega-sidebar / .mega-brand above,
   // just without the left categories rail since there's no second level.
   .drop-mega.mega-list {
-    width: 100vw;
+    width: 280px;
     left: 0;
-    position: fixed;
-    top: 55px;
-    padding-top: 0;
+    position: absolute;
+    top: 100%;
+    padding-top: 12px;
 
     ul {
       background: #111;
-      border-radius: 0;
+      border-radius: 12px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 48px;
-      padding: 24px 32px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
     }
 
     li {
       margin-bottom: 0 !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      &:last-child {
+        border-bottom: none;
+      }
 
       a {
-        display: inline-block;
-        padding: 0 !important;
-        width: auto;
-        color: rgba(255, 255, 255, 0.75);
-        font-size: 14px;
-        font-weight: 600;
+        display: block;
+        padding: 16px 24px !important;
+        width: 100%;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 15px;
+        font-weight: 500;
         border-bottom: none !important;
 
         &:hover {
           color: #fff;
+          background: rgba(255, 255, 255, 0.06);
         }
 
         &:after {

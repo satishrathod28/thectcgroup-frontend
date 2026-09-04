@@ -26,6 +26,7 @@ const getProductTitle = (title) =>
   title?.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() || "";
 
 const Navbar = () => {
+  const navRef = React.useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [activeProductCat, setActiveProductCat] = useState(0);
@@ -85,6 +86,20 @@ const Navbar = () => {
       }
     };
     fetchBrands();
+  }, []);
+
+  useEffect(() => {
+    const setNavHeightVar = () => {
+      if (navRef.current) {
+        document.documentElement.style.setProperty(
+          "--navbar-height",
+          `${navRef.current.offsetHeight}px`
+        );
+      }
+    };
+    setNavHeightVar();
+    window.addEventListener("resize", setNavHeightVar);
+    return () => window.removeEventListener("resize", setNavHeightVar);
   }, []);
 
   useEffect(() => {
@@ -150,7 +165,7 @@ const Navbar = () => {
   return (
     <>
       <PatternAnim />
-      <nav className="main-nav">
+      <nav className="main-nav" ref={navRef}>
         <div className="container">
           <div className="inner-nav">
             <div className="l-part">
@@ -184,6 +199,7 @@ const Navbar = () => {
                             }`}
                           >
                             {link.name === "Product" ? (
+                              <div className="container">
                               <div className="mf-sidebar-flyout">
                                 <div className="mf-sidebar">
                                   <div className="mf-sidebar-item mf-top">
@@ -230,6 +246,7 @@ const Navbar = () => {
                                     ))}
                                   </div>
                                 </div>
+                              </div>
                               </div>
                             ) : link.name === "Our Brands" ? (
                               <ul>
