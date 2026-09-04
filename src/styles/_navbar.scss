@@ -92,6 +92,70 @@
                 }
             }
 
+            .product-search{
+                position: relative;
+                width: 150px;
+
+                form{
+                    margin: 0;
+                    position: relative;
+                }
+
+                input{
+                    width: 100%;
+                    padding: 8px 34px 8px 12px;
+                    border: 1px solid rgba($color: #fff, $alpha: 0.55);
+                    border-radius: 100px;
+                    outline: none;
+                    background: rgba($color: #fff, $alpha: 0.08);
+                    color: white;
+                    font-size: 12px;
+
+                    &::placeholder{
+                        color: rgba($color: #fff, $alpha: 0.8);
+                    }
+                }
+
+                .search-icon{
+                    position: absolute;
+                    top: 50%;
+                    right: 11px;
+                    width: 14px;
+                    height: 14px;
+                    transform: translateY(-50%);
+                    filter: invert(1);
+                    pointer-events: none;
+                }
+
+                .product-search-results{
+                    position: absolute;
+                    top: calc(100% + 10px);
+                    right: 0;
+                    z-index: 10;
+                    width: 240px;
+                    margin: 0;
+                    padding: 8px 0;
+                    list-style: none;
+                    background: white;
+                    box-shadow: 0 8px 24px rgba($color: #000, $alpha: 0.18);
+
+                    li a{
+                        display: block;
+                        padding: 8px 14px;
+                        color: var(--dark);
+                        font-size: 13px;
+
+                        &::after{
+                            display: none;
+                        }
+
+                        &:hover{
+                            background: rgba($color: #014293, $alpha: 0.08);
+                        }
+                    }
+                }
+            }
+
             a.main-btn{
                 background: white;
 
@@ -248,9 +312,6 @@
                     font-family: 'visbySemibold', sans-serif;
                 }
 
-                img{
-                    // filter: invert(100%);
-                }
             }
         }
     }
