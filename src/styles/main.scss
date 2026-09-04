@@ -2067,7 +2067,7 @@
 
 
 .drop-mega.mega-brand {
-    width: 100vw;
+    width: 100%;
     left: 0;
     position: fixed;
     top: var(--navbar-height, 55px);
@@ -2085,7 +2085,7 @@
 
   // Product mega menu: left sidebar (categories) + right flyout (columns of products)
   .drop-mega.mega-sidebar {
-    width: 100vw;
+    width: 100%;
     left: 0;
     position: fixed;
     top: var(--navbar-height, 55px);
@@ -2738,4 +2738,94 @@
 .main-btn.with-arrow.is-active img {
     transform: rotate(90deg);
     transition: transform 0.3s ease;
+}
+// Home page banner/image carousel (below the navbar) — plain circular arrows
+.home-banner-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  .hbc-track {
+    position: relative;
+    width: 100%;
+    height: 520px;
+  }
+
+  .hbc-slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    &.active {
+      display: block;
+    }
+
+    .hbc-slide-img {
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .hbc-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    background: #fff;
+    color: #444;
+    font-size: 20px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
+  .hbc-arrow-left {
+    left: 24px;
+  }
+
+  .hbc-arrow-right {
+    right: 24px;
+  }
+
+  @media (max-width: 991px) {
+    .hbc-track {
+      height: 380px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hbc-track {
+      height: 260px;
+    }
+
+    .hbc-arrow {
+      width: 34px;
+      height: 34px;
+      font-size: 16px;
+    }
+
+    .hbc-arrow-left {
+      left: 10px;
+    }
+
+    .hbc-arrow-right {
+      right: 10px;
+    }
+  }
 }
