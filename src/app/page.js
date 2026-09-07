@@ -14,9 +14,11 @@ import WArrow from "@/images/w-arrow.svg";
 import Im1 from "@/images/im1.png";
 
 import TabSection from "@/components/HomeSections/TabSection";
+import BannerCarousel from "@/components/HomeSections/BannerCarousel";
 import { PatternAnim } from "@/components/PatternAnim";
 import api from "@/axios/api";
 import ProductSec from "@/components/HomeSections/ProductSec";
+import TopProducts from "@/components/HomeSections/TopProducts";
 // import TabSection from '@/components/HomeSections/TabSection'
 // import Tab from 'react-bootstrap/Tab'
 import BlogCard from "@/components/BlogCard";
@@ -27,7 +29,6 @@ import TabIndustries from "@/components/HomeSections/TabIndustries";
 
 export default function Home() {
   const [homeCard, setHomeCard] = useState(null);
-  const [banner, setBanner] = useState(null);
   const [counters, setCounters] = useState(null);
   const [services, setServices] = useState(null);
   const [productCard, setProductCard] = useState(null);
@@ -98,15 +99,6 @@ export default function Home() {
       }
     };
 
-    const fetchBanner = async () => {
-      try {
-        const response = await api.get("/homebanner?page=home");
-        setBanner(response.data);
-      } catch (error) {
-        console.error("Error fetching banner data:", error);
-      }
-    };
-
     const fetchProductCard = async () => {
       try {
         const response = await api.get("/categories");
@@ -117,7 +109,6 @@ export default function Home() {
     };
 
     fetchHomeCard();
-    fetchBanner();
     fetchCounters();
     fetchServices();
     fetchProductCard();
@@ -125,55 +116,16 @@ export default function Home() {
 
   return (
     <>
-      {banner && (
-        <header className="main-header home-header">
-          {banner?.type == "video" && (
-            <video
-              src={banner?.image}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-100 h-auto"
-              alt="Header"
-            />
-          )}
-          <div className="container">
-            <div className="row align-items-center">
-              <div className="col-lg-6 col-12">
-                <div className="banner-con">
-                  <h1
-                    dangerouslySetInnerHTML={{ __html: banner?.heading }}
-                  ></h1>
-                  <p
-                    className="para"
-                    // style={{ color: "#0C76D8" }}
-                    dangerouslySetInnerHTML={{ __html: banner?.description }}
-                  ></p>
-                  <Link
-                    href={banner.link ? banner?.link : "#"}
-                    className="main-btn"
-                  >
-                    <span dangerouslySetInnerHTML={{ __html: banner?.btn }} />
-                  </Link>
-                </div>
-              </div>
-              <div className="col-lg-5 offset-lg-1 col-12">
-                {/* <div className="hero-img d-none">
-                        {
-                            banner?.type == 'image' &&
-                            <Image src={banner?.image} width={500} height={500} className="w-100 h-100" alt="Header"  />
-                        }
-                        {
-                            banner?.type == 'video' &&
-                            <video src={banner?.image} autoPlay loop muted playsInline className="w-100 h-auto" alt="Header"  />
-                        }
-                        </div> */}
-              </div>
-            </div>
-          </div>
-        </header>
-      )}
+      {/* Image/banner carousel shown right below the navbar.
+          Replace the images below with real banner images (or wire this
+          up to an API) whenever they're ready. */}
+      <BannerCarousel
+        banners={[
+          { image: HeaderImg, alt: "CTC Group banner 1" },
+          { image: Img2, alt: "CTC Group banner 2" },
+          { image: AeroBg, alt: "CTC Group banner 3" },
+        ]}
+      />
 
       <section className="sec sc-2">
         <div className="container">
@@ -226,6 +178,7 @@ export default function Home() {
         </div>
       </section>
       {productCard && <ProductSec productCard={productCard} />}
+      {productCard && <TopProducts productCard={productCard} />}
       {/* {homeCard && <TabSection data={homeCard} />} */}
       {homeCard && <TabIndustries data={homeCard} />}
       {/* <TabSection data={homeCard} /> */}

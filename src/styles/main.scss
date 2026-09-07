@@ -2067,10 +2067,21 @@
 
 
 .drop-mega.mega-brand {
+    // `position: absolute; top: 100%` keeps this flush against the trigger
+    // (.has-drop) — zero real gap, so hover never breaks. To still have the
+    // panel visually start below the logo/navbar row (like before), that
+    // extra space is added as `padding-top` instead of as a `top` offset:
+    // padding is still part of this element's own box, so the mouse never
+    // leaves a hoverable element while crossing it. `--mega-menu-bridge` is
+    // measured in JS from the actual layout, so it lines up correctly at
+    // any screen size.
     width: 100vw;
-    left: 0;
-    position: fixed;
-    top: 55px;
+    left: 50%;
+    right: auto;
+    margin-left: -50vw;
+    position: absolute;
+    top: 100%;
+    padding-top: var(--mega-menu-bridge, 20px);
   }
   .drop-mega.mega-brand ul {
     border-radius: 0px;
@@ -2085,16 +2096,29 @@
 
   // Product mega menu: left sidebar (categories) + right flyout (columns of products)
   .drop-mega.mega-sidebar {
+    // Same fix as .mega-brand above: `position: absolute; top: 100%` keeps
+    // this flush against the trigger (.has-drop) with zero gap, instead of
+    // being anchored to navbar-height independently of where the trigger
+    // actually sits/how tall it is.
     width: 100vw;
-    left: 0;
-    position: fixed;
-    top: 55px;
-    padding-top: 0;
+    left: 50%;
+    right: auto;
+    margin-left: -50vw;
+    position: absolute;
+    top: 100%;
+    // See .mega-brand above: this padding is the invisible hover-bridge
+    // that replaces the old (broken) `top: var(--navbar-height)` gap.
+    padding-top: var(--mega-menu-bridge, 20px);
+    background: #111;
+    // `background-clip: content-box` keeps the dark panel background out of
+    // the padding-top bridge, so the bridge stays visually invisible
+    // (you don't see a dark strip creeping up over the navbar) while still
+    // being part of the hoverable box.
+    background-clip: content-box;
 
     .mf-sidebar-flyout {
       display: flex;
       align-items: stretch;
-      background: #111;
       max-height: 70vh;
     }
 
@@ -2193,36 +2217,43 @@
   // fixed, full-width panel language as .mega-sidebar / .mega-brand above,
   // just without the left categories rail since there's no second level.
   .drop-mega.mega-list {
-    width: 100vw;
+    width: 280px;
     left: 0;
-    position: fixed;
-    top: 55px;
-    padding-top: 0;
+    position: absolute;
+    top: 100%;
+    padding-top: 12px;
 
     ul {
       background: #111;
-      border-radius: 0;
+      border-radius: 12px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 48px;
-      padding: 24px 32px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
     }
 
     li {
       margin-bottom: 0 !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      &:last-child {
+        border-bottom: none;
+      }
 
       a {
-        display: inline-block;
-        padding: 0 !important;
-        width: auto;
-        color: rgba(255, 255, 255, 0.75);
-        font-size: 14px;
-        font-weight: 600;
+        display: block;
+        padding: 16px 24px !important;
+        width: 100%;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 15px;
+        font-weight: 500;
         border-bottom: none !important;
 
         &:hover {
           color: #fff;
+          background: rgba(255, 255, 255, 0.06);
         }
 
         &:after {
@@ -2731,4 +2762,94 @@
 .main-btn.with-arrow.is-active img {
     transform: rotate(90deg);
     transition: transform 0.3s ease;
+}
+// Home page banner/image carousel (below the navbar) — plain circular arrows
+.home-banner-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  .hbc-track {
+    position: relative;
+    width: 100%;
+    height: 520px;
+  }
+
+  .hbc-slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    &.active {
+      display: block;
+    }
+
+    .hbc-slide-img {
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .hbc-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    background: #fff;
+    color: #444;
+    font-size: 20px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
+  .hbc-arrow-left {
+    left: 24px;
+  }
+
+  .hbc-arrow-right {
+    right: 24px;
+  }
+
+  @media (max-width: 991px) {
+    .hbc-track {
+      height: 380px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hbc-track {
+      height: 260px;
+    }
+
+    .hbc-arrow {
+      width: 34px;
+      height: 34px;
+      font-size: 16px;
+    }
+
+    .hbc-arrow-left {
+      left: 10px;
+    }
+
+    .hbc-arrow-right {
+      right: 10px;
+    }
+  }
 }

@@ -6,7 +6,24 @@
     top: 0;
     border-bottom: 1px solid rgba($color: #fff, $alpha: 0.4);
     z-index: 999;
-    backdrop-filter: blur(9px);
+
+    // The blur is applied on a pseudo-element (not on .main-nav itself) on
+    // purpose: putting `backdrop-filter` directly on .main-nav creates a new
+    // containing block for ANY `position: fixed` descendant (e.g. the
+    // product mega-menu flyout), so instead of being fixed to the viewport
+    // it gets fixed relative to this navbar's own box. That's what was
+    // making the Product mega-menu jump/collapse the moment the mouse moved
+    // over it. Keeping the filter on an isolated ::before avoids that side
+    // effect while still giving the navbar its blurred background.
+    &::before{
+        content: "";
+        position: absolute;
+        inset: 0;
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+        pointer-events: none;
+        z-index: -1;
+    }
 
     .inner-nav{
         display: flex;
