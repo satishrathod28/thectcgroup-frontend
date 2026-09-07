@@ -91,10 +91,28 @@ const Navbar = () => {
   useEffect(() => {
     const setNavHeightVar = () => {
       if (navRef.current) {
+        const navRect = navRef.current.getBoundingClientRect();
         document.documentElement.style.setProperty(
           "--navbar-height",
-          `${navRef.current.offsetHeight}px`
+          `${navRect.height}px`
         );
+
+        // Distance between the bottom of a nav trigger (e.g. "Product") and
+        // the bottom of the whole navbar/logo row. The mega-menu panels use
+        // this as padding-top (not as a positioning gap) so the visible
+        // panel still starts right below the logo, but the space is part of
+        // the panel's own hoverable box instead of empty space the mouse
+        // has to cross — that empty space was what made the menu close the
+        // moment you moved into it.
+        const trigger = navRef.current.querySelector(".has-drop");
+        if (trigger) {
+          const triggerRect = trigger.getBoundingClientRect();
+          const bridge = Math.max(0, navRect.bottom - triggerRect.bottom);
+          document.documentElement.style.setProperty(
+            "--mega-menu-bridge",
+            `${bridge}px`
+          );
+        }
       }
     };
     setNavHeightVar();

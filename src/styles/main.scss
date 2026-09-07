@@ -2067,10 +2067,21 @@
 
 
 .drop-mega.mega-brand {
-    width: 100%;
-    left: 0;
-    position: fixed;
-    top: var(--navbar-height, 55px);
+    // `position: absolute; top: 100%` keeps this flush against the trigger
+    // (.has-drop) — zero real gap, so hover never breaks. To still have the
+    // panel visually start below the logo/navbar row (like before), that
+    // extra space is added as `padding-top` instead of as a `top` offset:
+    // padding is still part of this element's own box, so the mouse never
+    // leaves a hoverable element while crossing it. `--mega-menu-bridge` is
+    // measured in JS from the actual layout, so it lines up correctly at
+    // any screen size.
+    width: 100vw;
+    left: 50%;
+    right: auto;
+    margin-left: -50vw;
+    position: absolute;
+    top: 100%;
+    padding-top: var(--mega-menu-bridge, 20px);
   }
   .drop-mega.mega-brand ul {
     border-radius: 0px;
@@ -2085,12 +2096,25 @@
 
   // Product mega menu: left sidebar (categories) + right flyout (columns of products)
   .drop-mega.mega-sidebar {
-    width: 100%;
-    left: 0;
-    position: fixed;
-    top: var(--navbar-height, 55px);
-    padding-top: 0;
+    // Same fix as .mega-brand above: `position: absolute; top: 100%` keeps
+    // this flush against the trigger (.has-drop) with zero gap, instead of
+    // being anchored to navbar-height independently of where the trigger
+    // actually sits/how tall it is.
+    width: 100vw;
+    left: 50%;
+    right: auto;
+    margin-left: -50vw;
+    position: absolute;
+    top: 100%;
+    // See .mega-brand above: this padding is the invisible hover-bridge
+    // that replaces the old (broken) `top: var(--navbar-height)` gap.
+    padding-top: var(--mega-menu-bridge, 20px);
     background: #111;
+    // `background-clip: content-box` keeps the dark panel background out of
+    // the padding-top bridge, so the bridge stays visually invisible
+    // (you don't see a dark strip creeping up over the navbar) while still
+    // being part of the hoverable box.
+    background-clip: content-box;
 
     .mf-sidebar-flyout {
       display: flex;
